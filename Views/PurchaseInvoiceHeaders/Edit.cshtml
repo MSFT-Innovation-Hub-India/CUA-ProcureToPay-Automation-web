@@ -1,0 +1,158 @@
+@model ERPWeb.Models.PurchaseInvoiceHeader
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>PurchaseInvoiceHeader</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PurchaseId" />
+            <div class="form-group">
+                <label asp-for="PurchaseInvoiceNo" class="control-label"></label>
+                <input asp-for="PurchaseInvoiceNo" class="form-control" />
+                <span asp-validation-for="PurchaseInvoiceNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContractReference" class="control-label"></label>
+                <input asp-for="ContractReference" class="form-control" />
+                <span asp-validation-for="ContractReference" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SupplierId" class="control-label"></label>
+                <input asp-for="SupplierId" class="form-control" />
+                <span asp-validation-for="SupplierId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalInvoiceValue" class="control-label"></label>
+                <input asp-for="TotalInvoiceValue" class="form-control" />
+                <span asp-validation-for="TotalInvoiceValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InvoiceDate" class="control-label"></label>
+                <input asp-for="InvoiceDate" class="form-control" />
+                <span asp-validation-for="InvoiceDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>            <div class="form-group">
+                <label asp-for="Remarks" class="control-label"></label>
+                <textarea asp-for="Remarks" class="form-control" rows="5" style="min-height: 120px;"></textarea>
+                <span asp-validation-for="Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<h4>Purchase Invoice Lines</h4>
+<hr />
+<div id="invoice-lines-container">
+    <table class="table">        <thead>
+            <tr>
+                <th>Item ID</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="invoice-lines">            @foreach (var line in Model.PurchaseInvoiceLines)
+            {
+                <tr data-sequence-id="@line.SequenceId">
+                    <td><input type="text" name="Lines[@line.SequenceId].ItemId" value="@line.ItemId" class="form-control" /></td>
+                    <td><input type="text" name="Lines[@line.SequenceId].Description" value="@line.Description" class="form-control" /></td>
+                    <td><input type="number" name="Lines[@line.SequenceId].Quantity" value="@line.Quantity" class="form-control" /></td>
+                    <td><input type="number" name="Lines[@line.SequenceId].UnitPrice" value="@line.UnitPrice" class="form-control" /></td>
+                    <td><input type="number" name="Lines[@line.SequenceId].TotalPrice" value="@line.TotalPrice" class="form-control" readonly /></td>
+                    <td>
+                        <button type="button" class="btn btn-danger remove-line">Remove</button>
+                        <button type="button" class="btn btn-primary save-line">Save</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-secondary" id="add-line">Add Line</button>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('add-line').addEventListener('click', function () {
+            const tableBody = document.getElementById('invoice-lines');
+            const newRow = document.createElement('tr');            newRow.innerHTML = `
+                <td><input type="text" name="Lines[0].ItemId" class="form-control" placeholder="Enter Item ID" required /></td>
+                <td><input type="text" name="Lines[0].Description" class="form-control" /></td>
+                <td><input type="number" name="Lines[0].Quantity" class="form-control" /></td>
+                <td><input type="number" name="Lines[0].UnitPrice" class="form-control" /></td>
+                <td><input type="number" name="Lines[0].TotalPrice" class="form-control" readonly /></td>
+                <td><button type="button" class="btn btn-danger remove-line">Remove</button><button type="button" class="btn btn-success save-line">Save</button></td>
+            `;
+
+            tableBody.appendChild(newRow);
+
+            newRow.querySelector('.remove-line').addEventListener('click', function () {
+                newRow.remove();
+            });
+        });
+
+        document.querySelectorAll('.remove-line').forEach(button => {
+            button.addEventListener('click', function () {
+                button.closest('tr').remove();
+            });
+        });
+
+        document.querySelectorAll('.save-line').forEach(button => {
+            button.addEventListener('click', function () {
+                const row = button.closest('tr');
+                const description = row.querySelector('input[name$=".Description"]').value;
+                const quantity = row.querySelector('input[name$=".Quantity"]').value;
+                const unitPrice = row.querySelector('input[name$=".UnitPrice"]').value;
+                const totalPrice = row.querySelector('input[name$=".TotalPrice"]').value;
+
+                const lineData = {
+                    Description: description,
+                    Quantity: parseFloat(quantity),
+                    UnitPrice: parseFloat(unitPrice),
+                    TotalPrice: parseFloat(totalPrice),
+                    PurchaseId: @Model.PurchaseId // Pass the PurchaseId from the model
+                };
+
+                fetch('/PurchaseInvoiceHeaders/SaveInvoiceLine', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(lineData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Line saved successfully!');
+                    } else {
+                        alert('Error saving line: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while saving the line.');
+                });
+            });
+        });
+    </script>
+}
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -1,0 +1,46 @@
+@model IEnumerable<ERPWeb.Models.PurchaseInvoiceLine>
+
+@{
+    ViewData["Title"] = "Invoice Lines";
+}
+
+<h2>Invoice Lines</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Sequence ID</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total Price</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+    <tr>
+        <form asp-action="SaveLine" method="post">
+            <td>
+                <input type="hidden" name="sequenceId" value="@item.SequenceId" />
+                @item.SequenceId
+            </td>
+            <td>
+                <input type="text" name="description" value="@item.Description" class="form-control" />
+            </td>
+            <td>
+                <input type="number" name="quantity" value="@item.Quantity" class="form-control" />
+            </td>
+            <td>
+                <input type="number" name="unitPrice" value="@item.UnitPrice" step="0.01" class="form-control" />
+            </td>
+            <td>@item.TotalPrice</td>
+            <td>
+                <button type="submit" class="btn btn-success">Save</button>
+            </td>
+        </form>
+    </tr>
+}
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-primary">Back to Purchase Invoice Headers</a>
