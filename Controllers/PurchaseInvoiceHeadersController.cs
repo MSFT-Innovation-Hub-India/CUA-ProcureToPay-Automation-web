@@ -48,12 +48,10 @@ namespace ERPWeb.Controllers
         public IActionResult Create()
         {
             return View();
-        }
-
-        // POST: PurchaseInvoiceHeaders/Create
+        }        // POST: PurchaseInvoiceHeaders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PurchaseId,ContractReference,PurchaseInvoiceNo,Status,SupplierId,TotalInvoiceValue")] PurchaseInvoiceHeader purchaseInvoiceHeader)
+        public async Task<IActionResult> Create([Bind("PurchaseId,ContractReference,PurchaseInvoiceNo,Status,SupplierId,TotalInvoiceValue,Remarks,InvoiceDate")] PurchaseInvoiceHeader purchaseInvoiceHeader)
         {
             if (ModelState.IsValid)
             {
@@ -62,7 +60,7 @@ namespace ERPWeb.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(purchaseInvoiceHeader);
-        }        // GET: PurchaseInvoiceHeaders/Edit/5
+        }// GET: PurchaseInvoiceHeaders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.PurchaseInvoiceHeaders == null)

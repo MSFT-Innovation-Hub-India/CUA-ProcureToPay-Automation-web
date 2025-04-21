@@ -289,3 +289,4 @@ C:\Users\sansri\ResponsesAPI Samples\p2p-anomaly-detection-operator\erp-web\obj\
 C:\Users\sansri\ResponsesAPI Samples\p2p-anomaly-detection-operator\erp-web\obj\Debug\net8.0\ERPWeb.pdb
 C:\Users\sansri\ResponsesAPI Samples\p2p-anomaly-detection-operator\erp-web\obj\Debug\net8.0\ERPWeb.genruntimeconfig.cache
 C:\Users\sansri\ResponsesAPI Samples\p2p-anomaly-detection-operator\erp-web\obj\Debug\net8.0\ref\ERPWeb.dll
+C:\Users\sansri\ResponsesAPI Samples\p2p-anomaly-detection-operator\erp-web\obj\Debug\net8.0\ERPWeb.sourcelink.json
