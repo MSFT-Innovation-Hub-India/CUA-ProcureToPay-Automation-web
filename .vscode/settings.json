@@ -1,0 +1,14 @@
+{
+    "containerApps.deploymentConfigurations": [
+        {
+            "label": "erp-web",
+            "type": "AcrDockerBuildRequest",
+            "dockerfilePath": "Dockerfile",
+            "srcPath": ".",
+            "envPath": "",
+            "resourceGroup": "p2p-cua-rg",
+            "containerApp": "erp-web",
+            "containerRegistry": "audiogenaiapp66a0b2"
+        }
+    ]
+}
