@@ -1,6 +1,8 @@
 # ERP Web Application
 
-This is a Web Application focused on managing Purchase-to-Pay processes, including contracts and purchase invoices. The application provides a user-friendly interface for managing these business processes through master-detail pages. It is meant to be used in tandem with another Solution that uses AI to launch the web pages in this application and perform the CRUD operations on the data.
+This is a Web Application focused on managing Purchase-to-Pay processes, including contracts and purchase invoices. The application provides a user-friendly interface for managing these business processes through master-detail pages. 
+
+This applicatin is meant to be used in tandem with another Solution that uses AI to launch the web pages in this application and perform the CRUD operations on the data. [Here](https://github.com/MSFT-Innovation-Hub-India/CUA-ProcureToPay-Automation) is the GitHub Repo of that Solution.
 
 ## Features
 
